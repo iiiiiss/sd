@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import base64
 import importlib.util
 from IPython.display import clear_output
@@ -15,11 +15,10 @@ sdw = base64.b64decode("c3RhYmxlLWRpZmZ1c2lvbi13ZWJ1aQ==").decode('ascii') # sdw
 gwebui_dir = f'/content/drive/MyDrive/{sdw}'
 
 # 切换到/content目录
-import os
 os.chdir('/content')
 
 # 部署 ubuntu3 环境
-%env TF_CPP_MIN_LOG_LEVEL=1
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
 
 subprocess.run(["apt-get", "-y", "install", "-qq", "aria2"])
 subprocess.run(["apt", "-y", "update", "-qq"])
@@ -29,7 +28,7 @@ subprocess.run(["wget", "https://launchpad.net/ubuntu/+source/google-perftools/2
 subprocess.run(["wget", "https://launchpad.net/ubuntu/+source/google-perftools/2.5-2.2ubuntu3/+build/14795286/+files/libgoogle-perftools4_2.5-2.2ubuntu3_amd64.deb"])
 subprocess.run(["apt", "install", "-qq", "libunwind8-dev"])
 subprocess.run(["dpkg", "-i", "*.deb"])
-%env LD_PRELOAD=libtcmalloc.so
+os.environ['LD_PRELOAD'] = 'libtcmalloc.so'
 subprocess.run(["rm", "*.deb"])
 
 # 部署 GPU 环境
@@ -40,5 +39,5 @@ subprocess.run(["pip", "install", "-q", "xformers==0.0.18", "triton==2.0.0", "-U
 clear_output()
 
 # 切换到指定目录并执行Python脚本
-%cd {gwebui_dir}-V2.2
+os.chdir(f"{gwebui_dir}-V2.2")
 subprocess.run(["python", "launch.py", "--listen", "--enable-insecure-extension-access", "--theme", "dark", "--gradio-queue", "--multiple", "--opt-sdp-attention"])
