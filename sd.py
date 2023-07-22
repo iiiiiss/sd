@@ -15,7 +15,8 @@ sdw = base64.b64decode("c3RhYmxlLWRpZmZ1c2lvbi13ZWJ1aQ==").decode('ascii') # sdw
 gwebui_dir = f'/content/drive/MyDrive/{sdw}'
 
 # 切换到/content目录
-%cd /content
+import os
+os.chdir('/content')
 
 # 部署 ubuntu3 环境
 %env TF_CPP_MIN_LOG_LEVEL=1
